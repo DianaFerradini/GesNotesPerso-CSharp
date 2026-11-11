@@ -9,7 +9,7 @@
             switch (choix)
             {
                 case 0: //sortir
-                    Console.WriteLine("Au revoir");
+                    Console.WriteLine("Au revoir.");
                     break;
 
                 case 1: //ajouter etudiant
@@ -17,15 +17,17 @@
                     bool success = Service.SaveEtudiant(et);
                     if (success)
                     {
-                        Console.WriteLine("Etudiant ajouté avec succès");
+                        Console.WriteLine("Etudiant ajouté avec succès.");
                     }
                     else
                     {
-                        Console.WriteLine("Erreur");
+                        Console.WriteLine("Erreur.");
                     }
                     break;
 
                 case 2: //lister etudiants
+                    List<Etudiant> etudiants = Service.GetAllEtudiants();
+                    View.AfficherEtudiants(etudiants);
                     break;
 
                 case 3:
@@ -35,7 +37,7 @@
                     break;
 
                 default:
-                    Console.WriteLine("Faire un choix entre 0 et 4");
+                    Console.WriteLine("Faire un choix entre 0 et 4.");
                     break;
             }
         } while (choix != 0);
@@ -94,6 +96,11 @@ class Etudiant
     {
         notes?.Add(note);
     }
+
+    public override string ToString()
+    {
+        return $"Matricule : {matricule} - Nom : {nom} - Prénom : {prenom}";
+    }
 }
 
 class Service
@@ -114,6 +121,11 @@ class Service
         compteur++;
         return $"ism{compteur}";
     }
+
+    public static List<Etudiant> GetAllEtudiants()
+    {
+        return etudiants;
+    }
 }
 
 class View
@@ -126,7 +138,7 @@ class View
         {
             Console.WriteLine("1. Ajouter un etudiant dans une liste");
             Console.WriteLine("2. Afficher la liste des étudiants");
-            Console.WriteLine("3. Ajouter une note a un etudiant");
+            Console.WriteLine("3. Ajouter une note à un etudiant");
             Console.WriteLine("4. Lister les notes d'un etudiant");
             Console.WriteLine("0. Quitter");
             Console.WriteLine("Saisir votre choix : ");
@@ -151,5 +163,10 @@ class View
         string nom = LireChaine("Saisir le nom :");
         string prenom = LireChaine("Saisir le prénom :");
         return new Etudiant(nom, prenom);
+    }
+
+    public static void AfficherEtudiants(List<Etudiant> etudiants)
+    {
+        etudiants.ForEach(e => Console.WriteLine(e.ToString()));
     }
 }
