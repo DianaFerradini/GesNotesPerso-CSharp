@@ -82,35 +82,7 @@
 }
 
 
-class Service
-{
-    private static List<Etudiant> etudiants = new();
-    private static int compteur = 0;
 
-    public static bool SaveEtudiant(Etudiant et)
-    {
-        string matricule = GenererMatricule();
-        et.SetMatricule(matricule);
-        etudiants.Add(et);
-        return true;
-    }
-
-    private static string GenererMatricule()
-    {
-        compteur++;
-        return $"ism{compteur}";
-    }
-
-    public static List<Etudiant> FindAllEtudiants()
-    {
-        return etudiants;
-    }
-
-    public static Etudiant? FindEtudiantByMatricule(string matricule)
-    {
-        return etudiants.FirstOrDefault(e => e.GetMatricule() == matricule);
-    }
-}
 
 class View
 {

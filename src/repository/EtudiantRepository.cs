@@ -1,4 +1,4 @@
-class EtudiantRepository : IEtudiantRepository
+public class EtudiantRepository : IEtudiantRepository
 {
     public List<Etudiant> etudiants = new();
 

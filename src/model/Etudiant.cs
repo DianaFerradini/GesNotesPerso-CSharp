@@ -1,4 +1,4 @@
-class Etudiant
+public class Etudiant
 {
     private string? matricule;
     private string nom;

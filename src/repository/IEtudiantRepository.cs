@@ -1,4 +1,4 @@
-interface IEtudiantRepository
+public interface IEtudiantRepository
 {
     List<Etudiant> FindAllEtudiants();
     Etudiant? FindEtudiantByMatricule(string matricule);
