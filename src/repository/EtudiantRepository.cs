@@ -1,6 +1,6 @@
-class EtudiantRepository
+class EtudiantRepository : IEtudiantRepository
 {
-    private List<Etudiant> etudiants = new();
+    public List<Etudiant> etudiants = new();
 
     public List<Etudiant> FindAllEtudiants()
     {
