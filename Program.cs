@@ -26,14 +26,51 @@
                     break;
 
                 case 2: //lister etudiants
-                    List<Etudiant> etudiants = Service.GetAllEtudiants();
+                    List<Etudiant> etudiants = Service.FindAllEtudiants();
                     View.AfficherEtudiants(etudiants);
                     break;
 
-                case 3:
+                case 3: //ajouter une note à un etudiant
+                    Etudiant? etudiantRecherche;
+                    do
+                    { 
+                        string matricule = View.LireChaine("Saisir le matricule de l'étudiant : ");
+                        etudiantRecherche = Service.FindEtudiantByMatricule(matricule);
+                        if (etudiantRecherche is null)
+                        {
+                            Console.WriteLine("Ce matricule ne correspond à aucun étudiant.");
+                        }
+                        else
+                        {
+                            double note = View.LireDouble("Saisir la note : ");
+                            etudiantRecherche.AddNote(note);
+                        }
+                    } while (etudiantRecherche is null);
                     break;
 
-                case 4:
+                case 4: //lister les notes d'un etudiant
+                    do
+                    { 
+                        string matricule = View.LireChaine("Saisir le matricule de l'étudiant : ");
+                        etudiantRecherche = Service.FindEtudiantByMatricule(matricule);
+                        if (etudiantRecherche is null)
+                        {
+                            Console.WriteLine("Ce matricule ne correspond à aucun étudiant.");
+                        }
+                        else
+                        {
+                            Console.WriteLine(etudiantRecherche.ToString());
+                            List<double>? notes = etudiantRecherche.GetNotes();
+                            if (notes?.Count() == 0)
+                            {
+                                Console.WriteLine("Pas de notes enregistrée pour cet étudiant.");
+                            }
+                            else
+                            {
+                                View.AfficherNotes(notes);
+                            }
+                        }
+                    } while (etudiantRecherche is null);
                     break;
 
                 default:
@@ -49,7 +86,7 @@ class Etudiant
     private string? matricule;
     private string nom;
     private string prenom;
-    private List<double>? notes;
+    private List<double>? notes = new();
 
     public Etudiant(string nom, string prenom)
     {
@@ -122,9 +159,14 @@ class Service
         return $"ism{compteur}";
     }
 
-    public static List<Etudiant> GetAllEtudiants()
+    public static List<Etudiant> FindAllEtudiants()
     {
         return etudiants;
+    }
+
+    public static Etudiant? FindEtudiantByMatricule(string matricule)
+    {
+        return etudiants.FirstOrDefault(e => e.GetMatricule() == matricule);
     }
 }
 
@@ -154,6 +196,10 @@ class View
         {
             Console.WriteLine(msg);
             chaine = Console.ReadLine();
+            if (chaine != null)
+            {
+                chaine = chaine.Trim();
+            }
         } while (chaine == null);
         return chaine;
     }
@@ -168,5 +214,23 @@ class View
     public static void AfficherEtudiants(List<Etudiant> etudiants)
     {
         etudiants.ForEach(e => Console.WriteLine(e.ToString()));
+    }
+
+    public static double LireDouble(string msg)
+    {
+        bool result = false;
+        double choix = 0;
+        do
+        {
+            Console.WriteLine(msg);
+            result = double.TryParse(Console.ReadLine(), out choix);
+        } while (!result);
+        return choix;
+    }
+
+    public static void AfficherNotes(List<double>? notes)
+    {
+        Console.WriteLine("Notes :");
+        notes?.ForEach(n => Console.WriteLine(n));
     }
 }
