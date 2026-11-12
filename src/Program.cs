@@ -2,6 +2,12 @@
 {
     public static void Main(string[] args)
     {
+        //factory
+        IDatabase database = DatabaseMemory.Instance;
+        IEtudiantRepository repository = new EtudiantRepository(database);
+        IEtudiantService service = new EtudiantService(repository);
+        IUserView view = new UserView(service);
+
         int choix;
         do
         {
@@ -78,73 +84,5 @@
                     break;
             }
         } while (choix != 0);
-    }
-}
-
-
-
-
-class View
-{
-    public static int Menu()
-    {
-        bool result = false;
-        int choix = 0;
-        do
-        {
-            Console.WriteLine("1. Ajouter un etudiant dans une liste");
-            Console.WriteLine("2. Afficher la liste des étudiants");
-            Console.WriteLine("3. Ajouter une note à un etudiant");
-            Console.WriteLine("4. Lister les notes d'un etudiant");
-            Console.WriteLine("0. Quitter");
-            Console.WriteLine("Saisir votre choix : ");
-            result = int.TryParse(Console.ReadLine(), out choix);
-        } while (!result);
-        return choix;
-    }
-
-    public static string LireChaine(string msg)
-    {
-        string? chaine;
-        do
-        {
-            Console.WriteLine(msg);
-            chaine = Console.ReadLine();
-            if (chaine != null)
-            {
-                chaine = chaine.Trim();
-            }
-        } while (chaine == null);
-        return chaine;
-    }
-
-    public static Etudiant SaisieEtudiant()
-    {
-        string nom = LireChaine("Saisir le nom :");
-        string prenom = LireChaine("Saisir le prénom :");
-        return new Etudiant(nom, prenom);
-    }
-
-    public static void AfficherEtudiants(List<Etudiant> etudiants)
-    {
-        etudiants.ForEach(e => Console.WriteLine(e.ToString()));
-    }
-
-    public static double LireDouble(string msg)
-    {
-        bool result = false;
-        double choix = 0;
-        do
-        {
-            Console.WriteLine(msg);
-            result = double.TryParse(Console.ReadLine(), out choix);
-        } while (!result);
-        return choix;
-    }
-
-    public static void AfficherNotes(List<double>? notes)
-    {
-        Console.WriteLine("Notes :");
-        notes?.ForEach(n => Console.WriteLine(n));
     }
 }

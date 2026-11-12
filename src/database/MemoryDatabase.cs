@@ -1,4 +1,4 @@
-public sealed class DatabaseMemory : IDatabase 
+public class DatabaseMemory : IDatabase 
 {
     //pattern singleton
     private static DatabaseMemory? _instance = null;
