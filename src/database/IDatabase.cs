@@ -1,5 +1,5 @@
-public interface Database {
+public interface IDatabase {
     void CreateConnexion();
-    Etudiant Insert(Etudiant etudiant);
-    List<Etudiant> GetEtudiants();
+    bool Insert(Etudiant etudiant);
+    List<Etudiant>? GetEtudiants();
 }
