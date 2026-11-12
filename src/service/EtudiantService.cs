@@ -1,19 +1,19 @@
-public class EtudiantService
+public class EtudiantService : IEtudiantService
 {
     private IEtudiantRepository repo;
+
+    private int compteur = 0;
 
     public EtudiantService(IEtudiantRepository repo)
     {
         this.repo = repo;
     }
-    private int compteur = 0;
 
     public bool SaveEtudiant(Etudiant et)
     {
         string matricule = GenererMatricule();
         et.SetMatricule(matricule);
-        repo.InsertEtudiant(et);
-        return true;
+        return repo.InsertEtudiant(et);
     }
 
     private string GenererMatricule()
@@ -21,6 +21,4 @@ public class EtudiantService
         compteur++;
         return $"ism{compteur}";
     }
-
-    
 }
