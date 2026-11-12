@@ -1,20 +1,25 @@
 public class EtudiantRepository : IEtudiantRepository
 {
-    public List<Etudiant> etudiants = new();
+    private IDatabase _database;
 
-    public List<Etudiant> FindAllEtudiants()
+    public EtudiantRepository(IDatabase database)
     {
-        return etudiants;
+        _database = database;
+    }
+
+    public List<Etudiant>? FindAllEtudiants()
+    {
+        return _database.GetEtudiants();
     }
 
     public Etudiant? FindEtudiantByMatricule(string matricule)
     {
-        return etudiants.FirstOrDefault(e => e.GetMatricule() == matricule);
+        var etudiants = FindAllEtudiants();
+        return etudiants?.FirstOrDefault(e => e.GetMatricule() == matricule);
     }
 
     public bool InsertEtudiant(Etudiant etudiant)
     {
-        etudiants.Add(etudiant);
-        return true;
+        return _database.Insert(etudiant);
     }
 }
